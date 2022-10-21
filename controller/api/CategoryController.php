@@ -2,13 +2,12 @@
 
 include_once '../controller/api/BaseController.php';
 
-class AuthorController extends BaseController
+class CategoryController extends BaseController
 {
-    private $tableName = 'authors';
+    private $tableName = 'categories';
     private $connection;
 
-    public $firstname;
-    public $lastname;
+    public $name;
 
     public function __construct($db)
     {
@@ -17,14 +16,13 @@ class AuthorController extends BaseController
 
     public function create()
     {
-        $this->firstname = htmlspecialchars(strip_tags($this->firstname));
-        $this->lastname = htmlspecialchars(strip_tags($this->lastname));
+        $this->name = htmlspecialchars(strip_tags($this->name));
         
         $stmt = $this->connection->prepare(
-            'INSERT INTO ' . $this->tableName . ' (firstname, lastname) VALUES (?,?)'
+            'INSERT INTO ' . $this->tableName . ' (name) VALUES (?)'
         );
 
-        $stmt->bind_param("ss", $this->firstname, $this->lastname);
+        $stmt->bind_param("s", $this->name);
         
         return $stmt->execute();
     }
@@ -49,25 +47,18 @@ class AuthorController extends BaseController
         $types = '';
         $params = array();
 
-        $firstname = '';
-        $lastname = '';
+        $name = '';
 
-        if (isset($this->firstname)) {
-            $firstname = "firstname = ?, ";
+        if (isset($this->name)) {
+            $name = "name = ?, ";
             $types .= 's';
-            array_push($params, htmlspecialchars(strip_tags($this->firstname)));
-        }
-
-        if (isset($this->lastname)) {
-            $lastname = "lastname = ?, ";
-            $types .= 's';
-            array_push($params, htmlspecialchars(strip_tags($this->lastname)));
+            array_push($params, htmlspecialchars(strip_tags($this->name)));
         }
 
         $types .= 'i';
         array_push($params, $this->id);
 
-        $sql = "UPDATE " . $this->tableName . " SET " . $firstname . $lastname . "modified = now() WHERE id = ?";
+        $sql = "UPDATE " . $this->tableName . " SET " . $name . "modified = now() WHERE id = ?";
 	    $stmt = $this->connection->prepare($sql);
 
         //TODO: oddzielic powtarzajaca sie liste zmiennych do jednej funkcji i miejsca
