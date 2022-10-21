@@ -73,13 +73,13 @@ class ArticleController extends BaseController
         if (isset($this->author_id)) {
             $author_id = "author_id= ?, ";
             $types .= 'i';
-            array_push($params, htmlspecialchars(strip_tags($this->author_id)));
+            array_push($params, intval(htmlspecialchars(strip_tags($this->author_id))));
         }
 
         if (isset($this->category_id)) {
             $category_id = "category_id= ?, ";
             $types .= 'i';
-            array_push($params, htmlspecialchars(strip_tags($this->category_id)));
+            array_push($params, intval(htmlspecialchars(strip_tags($this->category_id))));
         }
 
         $types .= 'i';
