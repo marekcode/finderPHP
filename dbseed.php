@@ -9,16 +9,26 @@ $statement = <<<EOS
     `author_id` int(11) NOT NULL,
     `category_id` int(11) NOT NULL,
     `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8, add PRIMARY KEY (`id`);
+    `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
     CREATE TABLE `authors` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `firstname` varchar(256) NOT NULL,
     `lastname` varchar(256) NOT NULL,
     `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8, add PRIMARY KEY (`id`);
+    `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+    CREATE TABLE `categories` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `name` varchar(256) NOT NULL,
+    `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
 
     CREATE TABLE `comments` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -27,8 +37,9 @@ $statement = <<<EOS
     `email` varchar(256) NOT NULL,
     `www` varchar(256) NOT NULL,
     `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8, add PRIMARY KEY (`id`);
+    `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 EOS;
 
 try {
