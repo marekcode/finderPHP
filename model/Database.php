@@ -1,8 +1,13 @@
 <?php
 // define("PROJECT_ROOT_PATH", __DIR__);
 
-// include_once PROJECT_ROOT_PATH . '/../inc/config.php';
-include_once '../inc/config.php';
+// include_once PROJECT_ROOT_PATH . '/config.php';
+// include_once '/model/config.php';
+
+define("DB_HOST", "localhost");
+define("DB_USERNAME", "root");
+define("DB_PASSWORD", "");
+define("DB_DATABASE_NAME", "finder");
 
 class Database
 {
@@ -14,7 +19,7 @@ class Database
             $this->connection = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE_NAME);
          
             if (mysqli_connect_errno()) {
-                throw new Exception("Could not connect to database.");
+                throw new Exception("Could not connect to databasel.");
             }
         } catch (Exception $e) {
             throw new Exception($e->getMessage());

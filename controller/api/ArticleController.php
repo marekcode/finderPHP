@@ -30,11 +30,7 @@ class ArticleController extends BaseController
 
         $stmt->bind_param("ssss", $this->title, $this->content, $this->author_id, $this->category_id);
         
-        if ($stmt->execute()) {
-            return true;
-        }
-    
-        return false;
+        return $stmt->execute();
     }
 
     public function read()
@@ -52,25 +48,50 @@ class ArticleController extends BaseController
 
     public function update()
     {
-	    $stmt = $this->connection->prepare("UPDATE " . $this->tableName . " SET title= ?, content = ?, author_id = ?, category_id = ?, modified = now() WHERE id = ?");
- 
-	    $this->title = htmlspecialchars(strip_tags($this->title));
-        $this->content = htmlspecialchars(strip_tags($this->content));
-        $this->author_id = intval(htmlspecialchars(strip_tags($this->author_id)));
-        $this->category_id = intval(htmlspecialchars(strip_tags($this->category_id)));
         $this->id = htmlspecialchars(strip_tags($this->id));
- 
-        //TODO: oddzielic powtarzajaca sie liste zmiennych do jednej funkcji i miejsca
-	    $stmt->bind_param(
-            "ssiii",
-            $this->title, $this->content, $this->author_id, $this->category_id, $this->id
-        );
-	
-        if ($stmt->execute()) {
-            return true;
+
+        $types = '';
+        $params = array();
+
+        $title = '';
+        $content = '';
+        $author_id = '';
+        $category_id = '';
+
+        if (isset($this->title)) {
+            $title = "title= ?, ";
+            $types .= 's';
+            array_push($params, htmlspecialchars(strip_tags($this->title)));
         }
-    
-        return false;
+
+        if (isset($this->content)) {
+            $content = "content= ?, ";
+            $types .= 's';
+            array_push($params, htmlspecialchars(strip_tags($this->content)));
+        }
+
+        if (isset($this->author_id)) {
+            $author_id = "author_id= ?, ";
+            $types .= 'i';
+            array_push($params, htmlspecialchars(strip_tags($this->author_id)));
+        }
+
+        if (isset($this->category_id)) {
+            $category_id = "category_id= ?, ";
+            $types .= 'i';
+            array_push($params, htmlspecialchars(strip_tags($this->category_id)));
+        }
+
+        $types .= 'i';
+        array_push($params, $this->id);
+
+        $sql = "UPDATE " . $this->tableName . " SET " . $title . $content . $author_id . $category_id . "modified = now() WHERE id = ?";
+	    $stmt = $this->connection->prepare($sql);
+
+        //TODO: oddzielic powtarzajaca sie liste zmiennych do jednej funkcji i miejsca
+	    $stmt->bind_param($types, ...$params);
+	
+        return $stmt->execute();
     }
 
     public function delete()
@@ -81,10 +102,6 @@ class ArticleController extends BaseController
  
 	    $stmt->bind_param("i", $this->id);
  
-        if ($stmt->execute()) {
-            return true;
-        }
-    
-        return false;
+        return $stmt->execute();
     }
 }

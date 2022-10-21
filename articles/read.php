@@ -10,9 +10,19 @@ $db = $database->getConnection();
  
 $article = new ArticleController($db);
 
-//TODO: zmienic format ?id=3 na /3
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$uri = explode('/', $uri);
+$isProperUri = !((isset($uri[1]) && $uri[1] != 'articles')
+    || (isset($uri[2]) && $uri[2] != 'read'));
+
+if (!$isProperUri) {
+    http_response_code(404);
+    exit();
+}
+    
 //TODO: dodac szukanie w read np ?author_id=3
-$article->id = (isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
+
+$article->id = isset($uri[3]) ? $uri[3] : false; //(isset($_GET['id']) && $_GET['id']) ? $_GET['id'] : '0';
 
 $result = $article->read();
 
@@ -38,6 +48,6 @@ if ($result->num_rows > 0) {
 } else {
     http_response_code(404);
     echo json_encode(
-        array("message" => "No item found.")
+        array("message" => "No article found.")
     );
 }
