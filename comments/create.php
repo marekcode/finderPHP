@@ -33,5 +33,5 @@ if (!empty($data->name)
     }
 } else {
     http_response_code(400);
-    echo json_encode(array("message" => "Unable to create comment. Data is incomplete."));
+    echo json_encode(array("message" => "Unable to create comment. Data is incomplete or invalid JSON format."));
 }

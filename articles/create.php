@@ -34,5 +34,5 @@ if (!empty($data->title)
     }
 } else {
     http_response_code(400);
-    echo json_encode(array("message" => "Unable to create article. Data is incomplete."));
+    echo json_encode(array("message" => "Unable to create article. Data is incomplete or invalid JSON format."));
 }
