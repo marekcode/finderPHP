@@ -12,21 +12,31 @@ $database = new Database();
 $db = $database->getConnection();
  
 $article = new ArticleController($db);
- 
-$data = json_decode(file_get_contents("php://input"));
 
-// TODO: zrobic przez delete/id a nie przez { id: 6 }
-if (!empty($data->id)) {
-	$article->id = $data->id;
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$uri = explode('/', $uri);
+$isProperUri = !((isset($uri[1]) && $uri[1] != 'articles')
+    || (isset($uri[2]) && $uri[2] != 'delete')
+    || !isset($uri[3]));
+
+if (!$isProperUri) {
+    http_response_code(404);
+    exit();
+}
+
+$id = $uri[3];
+
+if (!empty($id)) {
+	$article->id = $id;
 	
     if ($article->delete()) {
 		http_response_code(200);
-		echo json_encode(array("message" => "Item was deleted."));
+		echo json_encode(array("message" => "Article was deleted."));
 	} else {
 		http_response_code(503);
-		echo json_encode(array("message" => "Unable to delete item."));
+		echo json_encode(array("message" => "Unable to delete article."));
 	}
 } else {
 	http_response_code(400);
-    echo json_encode(array("message" => "Unable to delete items. Data is incomplete."));
+    echo json_encode(array("message" => "Unable to delete article. Data is incomplete."));
 }

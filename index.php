@@ -26,4 +26,4 @@ ini_set('display_errors', 1);
 // $strMethodName = $uri[3] . 'Action';
 // $objFeedController->{$strMethodName}();
 
-print "sdsf";
+print "Albo dziala bez bledow index albo postman";
