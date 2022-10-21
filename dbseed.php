@@ -10,7 +10,15 @@ $statement = <<<EOS
     `category_id` int(11) NOT NULL,
     `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8, add PRIMARY KEY (`id`);
+
+    CREATE TABLE `authors` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `firstname` varchar(256) NOT NULL,
+    `lastname` varchar(256) NOT NULL,
+    `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8, add PRIMARY KEY (`id`);
 
     CREATE TABLE `comments` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -20,7 +28,7 @@ $statement = <<<EOS
     `www` varchar(256) NOT NULL,
     `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+    ) ENGINE=MyISAM DEFAULT CHARSET=utf8, add PRIMARY KEY (`id`);
 EOS;
 
 try {
