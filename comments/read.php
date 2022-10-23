@@ -33,6 +33,7 @@ if ($result->num_rows > 0) {
         extract($item);
         $itemDetails = array(
             "id" => $id,
+            "article_id" => $article_id,
             "name" => $name,
             "comment" => $comment,
 			"email" => $email,

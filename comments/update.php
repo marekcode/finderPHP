@@ -26,11 +26,13 @@ if (!$isProperUri) {
  
 $data = json_decode(file_get_contents("php://input"));
 
-if (!empty($data->name)
+if (!empty($data->article_id)
+    || !empty($data->name)
     || !empty($data->comment)
     || !empty($data->email)) {
 	
 	$comment->id = $uri[3];
+	if (isset($data->article_id)) { $comment->article_id = $data->article_id; }
 	if (isset($data->name)) { $comment->name = $data->name; }
     if (isset($data->comment)) { $comment->comment = $data->comment; }
     if (isset($data->email)) { $comment->email = $data->email; }
