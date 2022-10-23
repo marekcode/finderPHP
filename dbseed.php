@@ -2,10 +2,10 @@
 require 'bootstrap.php';
 
 $statement = <<<EOS
-    DROP TABLE comments;
-    DROP TABLE articles;
-    DROP TABLE authors;
-    DROP TABLE categories;
+    DROP TABLE IF EXISTS comments;
+    DROP TABLE IF EXISTS articles;
+    DROP TABLE IF EXISTS authors;
+    DROP TABLE IF EXISTS categories;
 
     CREATE TABLE authors (
         id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -32,7 +32,7 @@ $statement = <<<EOS
         modified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT FOREIGN KEY (author_id) REFERENCES authors(id) ON DELETE RESTRICT,
         CONSTRAINT FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE RESTRICT
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
     CREATE TABLE comments (
         id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -40,7 +40,7 @@ $statement = <<<EOS
         name varchar(256) NOT NULL,
         comment text NOT NULL,
         email varchar(256) NOT NULL,
-        www varchar(256) NOT NULL,
+        www varchar(256) DEFAULT '',
         created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
         modified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
@@ -57,10 +57,10 @@ $statement = <<<EOS
     INSERT INTO articles (author_id, category_id, title, content) VALUES ('1', '2', 'Ziemniaki', 'Soczyste');
     INSERT INTO articles (author_id, category_id, title, content) VALUES ('2', '1', 'Wióry', 'Jakie wióry');
     
-    INSERT INTO comment (article_id, name, comment, email, www) VALUES ('1', 'aaa', 'aaaa', 'aaaaa');
-    INSERT INTO comment (article_id, name, comment, email, www) VALUES ('2', 'aaa', 'aaaa', 'aaaaa');
-    INSERT INTO comment (article_id, name, comment, email, www) VALUES ('3', 'aaa', 'aaaa', 'aaaaa');
-    INSERT INTO comment (article_id, name, comment, email, www) VALUES ('4', 'aaa', 'aaaa', 'aaaaa');
+    INSERT INTO comments (article_id, name, comment, email) VALUES ('1', 'aaa', 'aaaa', 'aaaaa');
+    INSERT INTO comments (article_id, name, comment, email) VALUES ('2', 'aaa', 'aaaa', 'aaaaa');
+    INSERT INTO comments (article_id, name, comment, email) VALUES ('3', 'aaa', 'aaaa', 'aaaaa');
+    INSERT INTO comments (article_id, name, comment, email) VALUES ('4', 'aaa', 'aaaa', 'aaaaa');
 
 
     articles (* - 1) authors
