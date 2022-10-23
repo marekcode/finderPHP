@@ -7,6 +7,7 @@ class CommentsController extends BaseController
     private $tableName = 'comments';
     private $connection;
 
+    public $article_id;
     public $name;
     public $comment;
     public $email;
@@ -19,16 +20,17 @@ class CommentsController extends BaseController
 
     public function create()
     {
+        $this->article_id = htmlspecialchars(strip_tags($this->article_id));
         $this->name = htmlspecialchars(strip_tags($this->name));
         $this->comment = htmlspecialchars(strip_tags($this->comment));
         $this->email = htmlspecialchars(strip_tags($this->email));
         $this->www = isset($this->www) ? htmlspecialchars(strip_tags($this->www)) : '';
         
         $stmt = $this->connection->prepare(
-            'INSERT INTO ' . $this->tableName . ' (name, comment, email, www) VALUES (?,?,?,?)'
+            'INSERT INTO ' . $this->tableName . ' (article_id, name, comment, email, www) VALUES (?,?,?,?,?)'
         );
 
-        $stmt->bind_param("ssss", $this->name, $this->comment, $this->email, $this->www);
+        $stmt->bind_param("issss", $this->article_id, $this->name, $this->comment, $this->email, $this->www);
         
         return $stmt->execute();
     }
@@ -53,11 +55,18 @@ class CommentsController extends BaseController
         $types = '';
         $params = array();
 
+        $article_id = '';
         $name = '';
         $comment = '';
         $email = '';
         $www = '';
 
+        if (isset($this->article_id)) {
+            $article_id = "article_id = ?, ";
+            $types .= 'i';
+            array_push($params, htmlspecialchars(strip_tags($this->article_id)));
+        }
+        
         if (isset($this->name)) {
             $name = "name = ?, ";
             $types .= 's';
@@ -85,7 +94,7 @@ class CommentsController extends BaseController
         $types .= 'i';
         array_push($params, $this->id);
 
-        $sql = "UPDATE " . $this->tableName . " SET " . $name . $comment . $email . $www . "modified = now() WHERE id = ?";
+        $sql = "UPDATE " . $this->tableName . " SET " . $article_id . $name . $comment . $email . $www . "modified = now() WHERE id = ?";
 	    $stmt = $this->connection->prepare($sql);
 
         //TODO: oddzielic powtarzajaca sie liste zmiennych do jednej funkcji i miejsca

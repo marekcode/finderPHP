@@ -15,10 +15,12 @@ $comment = new CommentsController($db);
  
 $data = json_decode(file_get_contents("php://input"));
 
-if (!empty($data->name)
+if (!empty($data->article_id)
+    && !empty($data->name)
     && !empty($data->comment)
     && !empty($data->email)) {
 
+    $comment->article_id = $data->article_id;
     $comment->name = $data->name;
     $comment->comment = $data->comment;
     $comment->email = $data->email;
